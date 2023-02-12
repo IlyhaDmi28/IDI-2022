@@ -1,0 +1,117 @@
+bool function CheckEven (int numb)
+{
+	var int Remains = numb % 2;
+	
+	var bool Even;
+	if(Remains == 0) then [Even = true;]
+	else [ Even = false; ]
+	
+	return Even;
+	
+}
+
+int function Operation(string oper, int x, int y)
+{
+
+	var int Res;
+	if(oper == "+") then [ Res = x + y; ]
+	if(oper == "-") then [ Res = x - y; ]
+	if(oper == "/") then [ Res = x / y; ]
+	if(oper == "*") then [ Res = x * y; ]
+	
+	return Res;
+}
+
+void function Degree()
+{
+	ConWriteln " ";
+	ConWriteln "Squaring and finding the square root of a number";
+	
+	var int Numb = 9;
+	var int PowNumb = pow(Numb, 2);
+	var int SqrtNumb = sqrt(Numb);
+	
+	ConWrite "Our number: "; ConWriteln Numb;
+	ConWrite "Number squared: "; ConWriteln PowNumb;
+	ConWrite "Square root: "; ConWriteln SqrtNumb;
+	return;
+}
+
+Main
+{
+	#Perform simple operations with numbers#
+	var int x = 12	; 
+	var int y = 6;
+	
+	ConWriteln x;
+	ConWriteln y;
+	
+	var string plus = "+";
+	var string minus = "-";
+	var string division  = "/";
+	var string hum = "*";
+	
+	var string OurText = "Our Operation ";
+	var int Result;
+	
+	ConWrite OurText;
+	ConWriteln plus;
+	Result = Operation(plus, x, y);
+	ConWrite x;
+	ConWrite " + ";
+	ConWrite y;
+	ConWrite " = ";
+	ConWriteln Result;
+	
+	ConWrite OurText;
+	ConWriteln minus;
+	Result = Operation(minus, x, y);
+	ConWrite x;
+	ConWrite " - ";
+	ConWrite y;
+	ConWrite " = ";
+	ConWriteln Result;
+	
+	ConWrite OurText;
+	ConWriteln division;
+	Result = Operation(division, x, y);
+	ConWrite x;
+	ConWrite " / ";
+	ConWrite y;
+	ConWrite " = ";
+	ConWriteln Result;
+	ConWrite OurText;
+	ConWriteln hum;
+	
+	Result = Operation(hum, x, y);
+	ConWrite x;
+	ConWrite " * ";
+	ConWrite y;
+	ConWrite " = ";
+	ConWriteln Result;
+	ConWriteln " ";
+	
+	#Check randoms 5 numbs for even with cycle#
+	ConWriteln "Check randoms 5 numbs for even";
+	
+	var int num;
+	var bool isEven = false;
+	
+	var int c = 0;
+	while(c < 5) do [
+		
+		num = random(c);
+		isEven = CheckEven(num);
+		
+		ConWrite "Number ";
+		ConWrite num;
+		ConWrite " is ";
+		
+		if(isEven) then [ConWriteln "even";]
+		else [ConWriteln "odd";]
+		c = c + 1;
+	]
+
+	#Perform operations with the degree of a number in the procedure#
+	Degree();
+}
