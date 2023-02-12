@@ -1,0 +1,13 @@
+int function MyFun(bool IsActive, int a, char b, string s) { 
+	
+	a = 13;
+	b = 'f';
+	WritreLine(b);
+	return a;
+}
+
+Main {
+	foo(false, 12, 'd', "fg");
+
+	type int j = (12 + 4) / (5 -2);
+}

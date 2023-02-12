@@ -1,0 +1,3 @@
+﻿  MFST.cpp
+D:\KPO\Compiler\IDI-2022\MFST.cpp(242,68): warning C4267: =: преобразование из "size_t" в "short"; возможна потеря данных
+  IDI-2022.vcxproj -> D:\KPO\Compiler\IDI-2022\Debug\IDI-2022.exe
