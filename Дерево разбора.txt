@@ -1,0 +1,20 @@
+int function DivTwo(int a)
+{
+	var int ost = a % 2;
+	if(ost != 0) then [a = (a - 1) / 2;]
+	else [a = a / 2;]
+	
+	return a;
+}
+
+Main
+{
+	var int x = random(10);
+
+	ConWrite "x = ";
+	ConWriteln x;
+
+	var int h = DivTwo(x);
+	
+	ConWriteln h;
+}

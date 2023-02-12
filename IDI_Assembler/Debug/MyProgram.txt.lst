@@ -1,0 +1,651 @@
+Microsoft (R) Macro Assembler Version 14.33.31629.0	    12/29/22 12:32:26
+MyProgram.txt.asm					     Page 1 - 1
+
+
+				.586
+				.model flat, stdcall
+				includelib libucrt.lib
+				includelib kernel32.lib
+				includelib "D:\KPO\Compiler\IDI-2022\Debug\IDI_Lib.lib"
+				ExitProcess PROTO:DWORD 
+				.stack 4096
+
+				 outnum PROTO : DWORD
+
+				 outstr PROTO : DWORD
+
+				 outstrline PROTO : DWORD
+
+				 outnumline PROTO : DWORD
+
+				 system_pause PROTO 
+
+				 random PROTO  : DWORD
+
+				 sqrt_num PROTO  : DWORD
+
+				 power PROTO : DWORD, : DWORD
+ 00000000			.const
+ 00000000 45 52 52 4F 52	 zero BYTE 'ERROR: DIVISION BY ZERO', 0
+	   3A 20 44 49 56
+	   49 53 49 4F 4E
+	   20 42 59 20 5A
+	   45 52 4F 00
+ 00000018 45 52 52 4F 52	 overflow BYTE 'ERROR: VARIABLE OVERFLOW', 0 
+	   3A 20 56 41 52
+	   49 41 42 4C 45
+	   20 4F 56 45 52
+	   46 4C 4F 57 00
+ 00000031 00000002			L1 SDWORD 2
+ 00000035 00000000			L2 SDWORD 0
+ 00000039 00000001			L3 DWORD 1
+ 0000003D 00000000			L4 DWORD 0
+ 00000041 2B 00				L5 BYTE '+', 0
+ 00000043 2D 00				L6 BYTE '-', 0
+ 00000045 2F 00				L7 BYTE '/', 0
+ 00000047 2A 00				L8 BYTE '*', 0
+ 00000049 20 00				L9 BYTE ' ', 0
+ 0000004B 53 71 75 61 72		L10 BYTE 'Squaring and finding the square root of a number', 0
+	   69 6E 67 20 61
+	   6E 64 20 66 69
+	   6E 64 69 6E 67
+	   20 74 68 65 20
+	   73 71 75 61 72
+	   65 20 72 6F 6F
+	   74 20 6F 66 20
+	   61 20 6E 75 6D
+	   62 65 72 00
+ 0000007C 00000009			L11 SDWORD 9
+ 00000080 4F 75 72 20 6E		L12 BYTE 'Our number: ', 0
+	   75 6D 62 65 72
+	   3A 20 00
+ 0000008D 4E 75 6D 62 65		L13 BYTE 'Number squared: ', 0
+	   72 20 73 71 75
+	   61 72 65 64 3A
+	   20 00
+ 0000009E 53 71 75 61 72		L14 BYTE 'Square root: ', 0
+	   65 20 72 6F 6F
+	   74 3A 20 00
+ 000000AC 0000000C			L15 SDWORD 12
+ 000000B0 00000006			L16 SDWORD 6
+ 000000B4 20 2B 20 00			L17 BYTE ' + ', 0
+ 000000B8 20 3D 20 00			L18 BYTE ' = ', 0
+ 000000BC 43 68 65 63 6B		L19 BYTE 'Check randoms 5 numbs for even', 0
+	   20 72 61 6E 64
+	   6F 6D 73 20 35
+	   20 6E 75 6D 62
+	   73 20 66 6F 72
+	   20 65 76 65 6E
+	   00
+ 000000DB 00000005			L20 SDWORD 5
+ 000000DF 4E 75 6D 62 65		L21 BYTE 'Number ', 0
+	   72 20 00
+ 000000E7 20 69 73 20 00		L22 BYTE ' is ', 0
+ 000000EC 65 76 65 6E 00		L23 BYTE 'even', 0
+ 000000F1 6F 64 64 00			L24 BYTE 'odd', 0
+ 000000F5 00000001			L25 SDWORD 1
+ 00000000			.data
+ 00000000 00000000			_CheckEvenRemains SDWORD 0
+ 00000004 00000000			_CheckEvenEven DWORD 0
+ 00000008 00000000			_OperationRes SDWORD 0
+ 0000000C 00000000			_DegreeNumb SDWORD 0
+ 00000010 00000000			_DegreePowNumb SDWORD 0
+ 00000014 00000000			_DegreeSqrtNumb SDWORD 0
+ 00000018 00000000			main_x SDWORD 0
+ 0000001C 00000000			main_y SDWORD 0
+ 00000020 00000000			main_plus DWORD ?
+ 00000024 00000000			main_minus DWORD ?
+ 00000028 00000000			main_division DWORD ?
+ 0000002C 00000000			main_hum DWORD ?
+ 00000030 00000000			main_Result SDWORD 0
+ 00000034 00000000			main_num SDWORD 0
+ 00000038 00000000			main_isEven DWORD 0
+ 0000003C 00000000			main_c SDWORD 0
+
+ 00000000			.code
+
+ 00000000			_CheckEven PROC _CheckEvennumb :  SDWORD 
+ 00000003  FF 75 08			push _CheckEvennumb
+ 00000006  FF 35 00000031 R		push L1
+ 0000000C  5B				pop ebx
+ 0000000D  58				pop eax
+ 0000000E  83 FB 00			cmp ebx,0
+ 00000011  74 3C			je NULL_DIVISION
+ 00000013  99				cdq
+ 00000014  F7 FB			idiv ebx
+ 00000016  52				push edx
+ 00000017  8F 05 00000000 R		pop _CheckEvenRemains
+
+ 0000001D  A1 00000000 R		mov eax, _CheckEvenRemains
+ 00000022  8B 1D 00000035 R		mov ebx, L2
+					.IF SDWORD PTR eax  ==  SDWORD PTR ebx
+ 0000002C  FF 35 00000039 R		push L3
+ 00000032  8F 05 00000004 R		pop _CheckEvenEven
+
+					.ELSE
+ 0000003A  FF 35 0000003D R		push L4
+ 00000040  8F 05 00000004 R		pop _CheckEvenEven
+
+
+					.ENDIF
+ 00000046  A1 00000004 R		mov eax, _CheckEvenEven
+					ret
+
+ 0000004F			NULL_DIVISION:
+ 0000004F  68 00000000 R	push offset zero
+ 00000054  E8 00000000 E	call outstrline
+ 00000059  E8 00000000 E	call system_pause
+ 0000005E  6A FF		push -1
+ 00000060  E8 00000000 E	call ExitProcess
+
+ 00000065			VAR_OVERFLOW:
+ 00000065  68 00000018 R	push offset overflow
+ 0000006A  E8 00000000 E	call outstrline
+ 0000006F  E8 00000000 E	call system_pause
+ 00000074  6A FE		push -2
+ 00000076  E8 00000000 E	call ExitProcess
+ 0000007B			_CheckEven ENDP
+ 0000007B			_Operation PROC _Operationoper :  DWORD , _Operationx :  SDWORD , _Operationy :  SDWORD 
+ 0000007E  8B 75 08			mov esi, _Operationoper
+ 00000081  BF 00000041 R		mov edi, offset L5
+ 00000086  B8 00000000			mov eax, 0
+					.WHILE eax == 0
+
+ 0000008D  8A 17				mov dl, BYTE PTR [edi]
+						.IF dl == 0
+ 00000093  8A 16					mov dl, BYTE PTR [esi]
+							.IF dl == 0
+ 00000099  B8 00000002						mov eax, 2
+							.ENDIF
+						.ENDIF
+
+ 0000009E  8A 17				mov dl, BYTE PTR [edi]
+ 000000A0  8A 1E				mov bl, BYTE PTR [esi]
+						.IF dl != bl
+ 000000A6  B8 00000001					mov eax, 1
+						.ENDIF
+
+ 000000AB  46					inc esi;
+ 000000AC  47					inc edi;
+					.ENDW
+
+					.IF eax  ==  2
+ 000000B6  FF 75 0C			push _Operationx
+ 000000B9  FF 75 10			push _Operationy
+ 000000BC  58				pop eax
+ 000000BD  5B				pop ebx
+ 000000BE  03 C3			add eax, ebx
+ 000000C0  0F 80 0000014B		jo VAR_OVERFLOW
+					.IF eax < 4294967168
+						.IF eax > 127
+ 000000D0  E9 0000013C					jmp VAR_OVERFLOW
+						.ENDIF
+					.ENDIF
+ 000000D5  50				push eax
+ 000000D6  8F 05 00000008 R		pop _OperationRes
+
+
+					.ENDIF
+ 000000DC  8B 75 08			mov esi, _Operationoper
+ 000000DF  BF 00000043 R		mov edi, offset L6
+ 000000E4  B8 00000000			mov eax, 0
+					.WHILE eax == 0
+
+ 000000EB  8A 17				mov dl, BYTE PTR [edi]
+						.IF dl == 0
+ 000000F1  8A 16					mov dl, BYTE PTR [esi]
+							.IF dl == 0
+ 000000F7  B8 00000002						mov eax, 2
+							.ENDIF
+						.ENDIF
+
+ 000000FC  8A 17				mov dl, BYTE PTR [edi]
+ 000000FE  8A 1E				mov bl, BYTE PTR [esi]
+						.IF dl != bl
+ 00000104  B8 00000001					mov eax, 1
+						.ENDIF
+
+ 00000109  46					inc esi;
+ 0000010A  47					inc edi;
+					.ENDW
+
+					.IF eax  ==  2
+ 00000114  FF 75 0C			push _Operationx
+ 00000117  FF 75 10			push _Operationy
+ 0000011A  5B				pop ebx
+ 0000011B  58				pop eax
+ 0000011C  2B C3			sub eax, ebx
+ 0000011E  0F 80 000000ED		jo VAR_OVERFLOW
+					.IF eax < 4294967168
+						.IF eax > 127
+ 0000012E  E9 000000DE					jmp VAR_OVERFLOW
+						.ENDIF
+					.ENDIF
+ 00000133  50				push eax
+ 00000134  8F 05 00000008 R		pop _OperationRes
+
+
+					.ENDIF
+ 0000013A  8B 75 08			mov esi, _Operationoper
+ 0000013D  BF 00000045 R		mov edi, offset L7
+ 00000142  B8 00000000			mov eax, 0
+					.WHILE eax == 0
+
+ 00000149  8A 17				mov dl, BYTE PTR [edi]
+						.IF dl == 0
+ 0000014F  8A 16					mov dl, BYTE PTR [esi]
+							.IF dl == 0
+ 00000155  B8 00000002						mov eax, 2
+							.ENDIF
+						.ENDIF
+
+ 0000015A  8A 17				mov dl, BYTE PTR [edi]
+ 0000015C  8A 1E				mov bl, BYTE PTR [esi]
+						.IF dl != bl
+ 00000162  B8 00000001					mov eax, 1
+						.ENDIF
+
+ 00000167  46					inc esi;
+ 00000168  47					inc edi;
+					.ENDW
+
+					.IF eax  ==  2
+ 00000172  FF 75 0C			push _Operationx
+ 00000175  FF 75 10			push _Operationy
+ 00000178  5B				pop ebx
+ 00000179  58				pop eax
+ 0000017A  83 FB 00			cmp ebx,0
+ 0000017D  74 7C			je NULL_DIVISION
+ 0000017F  99				cdq
+ 00000180  F7 FB			idiv ebx
+ 00000182  0F 80 00000089		jo VAR_OVERFLOW
+					.IF eax < 4294967168
+						.IF eax > 127
+ 00000192  EB 7D					jmp VAR_OVERFLOW
+						.ENDIF
+					.ENDIF
+ 00000194  50				push eax
+ 00000195  8F 05 00000008 R		pop _OperationRes
+
+
+					.ENDIF
+ 0000019B  8B 75 08			mov esi, _Operationoper
+ 0000019E  BF 00000047 R		mov edi, offset L8
+ 000001A3  B8 00000000			mov eax, 0
+					.WHILE eax == 0
+
+ 000001AA  8A 17				mov dl, BYTE PTR [edi]
+						.IF dl == 0
+ 000001B0  8A 16					mov dl, BYTE PTR [esi]
+							.IF dl == 0
+ 000001B6  B8 00000002						mov eax, 2
+							.ENDIF
+						.ENDIF
+
+ 000001BB  8A 17				mov dl, BYTE PTR [edi]
+ 000001BD  8A 1E				mov bl, BYTE PTR [esi]
+						.IF dl != bl
+ 000001C3  B8 00000001					mov eax, 1
+						.ENDIF
+
+ 000001C8  46					inc esi;
+ 000001C9  47					inc edi;
+					.ENDW
+
+					.IF eax  ==  2
+ 000001D3  FF 75 0C			push _Operationx
+ 000001D6  FF 75 10			push _Operationy
+ 000001D9  58				pop eax
+ 000001DA  5B				pop ebx
+ 000001DB  F7 EB			imul ebx
+ 000001DD  70 32			jo VAR_OVERFLOW
+					.IF eax < 4294967168
+						.IF eax > 127
+ 000001E9  EB 26					jmp VAR_OVERFLOW
+						.ENDIF
+					.ENDIF
+ 000001EB  50				push eax
+ 000001EC  8F 05 00000008 R		pop _OperationRes
+
+
+					.ENDIF
+ 000001F2  A1 00000008 R		mov eax, _OperationRes
+					ret
+
+ 000001FB			NULL_DIVISION:
+ 000001FB  68 00000000 R	push offset zero
+ 00000200  E8 00000000 E	call outstrline
+ 00000205  E8 00000000 E	call system_pause
+ 0000020A  6A FF		push -1
+ 0000020C  E8 00000000 E	call ExitProcess
+
+ 00000211			VAR_OVERFLOW:
+ 00000211  68 00000018 R	push offset overflow
+ 00000216  E8 00000000 E	call outstrline
+ 0000021B  E8 00000000 E	call system_pause
+ 00000220  6A FE		push -2
+ 00000222  E8 00000000 E	call ExitProcess
+ 00000227			_Operation ENDP
+ 00000227			_Degree PROC 
+
+ 00000227  68 00000049 R		push offset L9
+ 0000022C  E8 00000000 E		call outstrline
+
+ 00000231  68 0000004B R		push offset L10
+ 00000236  E8 00000000 E		call outstrline
+ 0000023B  FF 35 0000007C R		push L11
+ 00000241  8F 05 0000000C R		pop _DegreeNumb
+
+ 00000247  68 00000000 E		push power
+ 0000024C  FF 35 0000000C R		push _DegreeNumb
+ 00000252  FF 35 00000031 R		push L1
+ 00000258  5A				pop edx
+ 00000259  5A				pop edx
+ 0000025A  5A				pop edx
+ 0000025B  FF 35 00000031 R		push L1
+ 00000261  FF 35 0000000C R		push _DegreeNumb
+ 00000267  E8 00000000 E			call power
+ 0000026C  50				push eax
+ 0000026D  8F 05 00000010 R		pop _DegreePowNumb
+
+ 00000273  68 00000000 E		push sqrt_num
+ 00000278  FF 35 0000000C R		push _DegreeNumb
+ 0000027E  5A				pop edx
+ 0000027F  5A				pop edx
+ 00000280  FF 35 0000000C R		push _DegreeNumb
+ 00000286  E8 00000000 E			call sqrt_num
+ 0000028B  50				push eax
+ 0000028C  8F 05 00000014 R		pop _DegreeSqrtNumb
+
+
+ 00000292  68 00000080 R		push offset L12
+ 00000297  E8 00000000 E		call outstr
+
+ 0000029C  FF 35 0000000C R		push _DegreeNumb
+ 000002A2  E8 00000000 E		call outnumline
+
+ 000002A7  68 0000008D R		push offset L13
+ 000002AC  E8 00000000 E		call outstr
+
+ 000002B1  FF 35 00000010 R		push _DegreePowNumb
+ 000002B7  E8 00000000 E		call outnumline
+
+ 000002BC  68 0000009E R		push offset L14
+ 000002C1  E8 00000000 E		call outstr
+
+ 000002C6  FF 35 00000014 R		push _DegreeSqrtNumb
+ 000002CC  E8 00000000 E		call outnumline
+ 000002D1  C3				ret
+
+ 000002D2			NULL_DIVISION:
+ 000002D2  68 00000000 R	push offset zero
+ 000002D7  E8 00000000 E	call outstrline
+ 000002DC  E8 00000000 E	call system_pause
+ 000002E1  6A FF		push -1
+ 000002E3  E8 00000000 E	call ExitProcess
+
+ 000002E8			VAR_OVERFLOW:
+ 000002E8  68 00000018 R	push offset overflow
+ 000002ED  E8 00000000 E	call outstrline
+ 000002F2  E8 00000000 E	call system_pause
+ 000002F7  6A FE		push -2
+ 000002F9  E8 00000000 E	call ExitProcess
+ 000002FE			_Degree ENDP
+ 000002FE			main PROC
+ 000002FE  FF 35 000000AC R		push L15
+ 00000304  8F 05 00000018 R		pop main_x
+
+ 0000030A  FF 35 000000B0 R		push L16
+ 00000310  8F 05 0000001C R		pop main_y
+
+
+ 00000316  FF 35 00000018 R		push main_x
+ 0000031C  E8 00000000 E		call outnumline
+
+ 00000321  FF 35 0000001C R		push main_y
+ 00000327  E8 00000000 E		call outnumline
+ 0000032C  68 00000041 R		push offset L5
+ 00000331  8F 05 00000020 R		pop main_plus
+
+ 00000337  68 00000043 R		push offset L6
+ 0000033C  8F 05 00000024 R		pop main_minus
+
+ 00000342  68 00000045 R		push offset L7
+ 00000347  8F 05 00000028 R		pop main_division
+
+ 0000034D  68 00000047 R		push offset L8
+ 00000352  8F 05 0000002C R		pop main_hum
+
+ 00000358  68 0000007B R		push _Operation
+ 0000035D  FF 35 00000020 R		push main_plus
+ 00000363  FF 35 00000018 R		push main_x
+ 00000369  FF 35 0000001C R		push main_y
+ 0000036F  5A				pop edx
+ 00000370  5A				pop edx
+ 00000371  5A				pop edx
+ 00000372  5A				pop edx
+ 00000373  FF 35 0000001C R		push main_y
+ 00000379  FF 35 00000018 R		push main_x
+ 0000037F  FF 35 00000020 R		push main_plus
+ 00000385  E8 FFFFFCF1				call _Operation
+ 0000038A  50				push eax
+ 0000038B  8F 05 00000030 R		pop main_Result
+
+
+ 00000391  FF 35 00000018 R		push main_x
+ 00000397  E8 00000000 E		call outnum
+
+ 0000039C  68 000000B4 R		push offset L17
+ 000003A1  E8 00000000 E		call outstr
+
+ 000003A6  FF 35 0000001C R		push main_y
+ 000003AC  E8 00000000 E		call outnum
+
+ 000003B1  68 000000B8 R		push offset L18
+ 000003B6  E8 00000000 E		call outstr
+
+ 000003BB  FF 35 00000030 R		push main_Result
+ 000003C1  E8 00000000 E		call outnumline
+
+ 000003C6  68 00000049 R		push offset L9
+ 000003CB  E8 00000000 E		call outstrline
+
+ 000003D0  68 000000BC R		push offset L19
+ 000003D5  E8 00000000 E		call outstrline
+ 000003DA  FF 35 0000003D R		push L4
+ 000003E0  8F 05 00000038 R		pop main_isEven
+
+ 000003E6  FF 35 00000035 R		push L2
+ 000003EC  8F 05 0000003C R		pop main_c
+
+ 000003F2			while1:
+ 000003F2  A1 0000003C R		mov eax, main_c
+ 000003F7  8B 1D 000000DB R		mov ebx, L20
+
+					.IF SDWORD PTR eax  >=  SDWORD PTR ebx
+ 00000401  E9 000000A7				jmp endwhile1
+					.ENDIF
+
+ 00000406  68 00000000 E		push random
+ 0000040B  FF 35 0000003C R		push main_c
+ 00000411  5A				pop edx
+ 00000412  5A				pop edx
+ 00000413  FF 35 0000003C R		push main_c
+ 00000419  E8 00000000 E			call random
+ 0000041E  50				push eax
+ 0000041F  8F 05 00000034 R		pop main_num
+
+ 00000425  68 00000000 R		push _CheckEven
+ 0000042A  FF 35 00000034 R		push main_num
+ 00000430  5A				pop edx
+ 00000431  5A				pop edx
+ 00000432  FF 35 00000034 R		push main_num
+ 00000438  E8 FFFFFBC3				call _CheckEven
+ 0000043D  50				push eax
+ 0000043E  8F 05 00000038 R		pop main_isEven
+
+
+ 00000444  68 000000DF R		push offset L21
+ 00000449  E8 00000000 E		call outstr
+
+ 0000044E  FF 35 00000034 R		push main_num
+ 00000454  E8 00000000 E		call outnum
+
+ 00000459  68 000000E7 R		push offset L22
+ 0000045E  E8 00000000 E		call outstr
+ 00000463  A1 00000038 R		mov eax, main_isEven
+					.IF eax  ==  1
+
+ 0000046D  68 000000EC R		push offset L23
+ 00000472  E8 00000000 E		call outstrline
+					.ELSE
+
+ 00000479  68 000000F1 R		push offset L24
+ 0000047E  E8 00000000 E		call outstrline
+
+					.ENDIF
+ 00000483  FF 35 0000003C R		push main_c
+ 00000489  FF 35 000000F5 R		push L25
+ 0000048F  58				pop eax
+ 00000490  5B				pop ebx
+ 00000491  03 C3			add eax, ebx
+ 00000493  70 3F			jo VAR_OVERFLOW
+					.IF eax < 4294967168
+						.IF eax > 127
+ 0000049F  EB 33					jmp VAR_OVERFLOW
+						.ENDIF
+					.ENDIF
+ 000004A1  50				push eax
+ 000004A2  8F 05 0000003C R		pop main_c
+
+ 000004A8  E9 FFFFFF45			jmp while1
+
+ 000004AD			endwhile1:
+
+ 000004AD  E8 FFFFFD75		call _Degree
+ 000004B2  E8 00000000 E	call system_pause
+ 000004B7  6A 00		push 0
+ 000004B9  E8 00000000 E	call ExitProcess
+ 000004BE			NULL_DIVISION:
+ 000004BE  68 00000000 R	push offset zero
+ 000004C3  E8 00000000 E	call outstrline
+ 000004C8  E8 00000000 E	call system_pause
+ 000004CD  6A FF		push -1
+ 000004CF  E8 00000000 E	call ExitProcess
+ 000004D4			VAR_OVERFLOW:
+ 000004D4  68 00000018 R	push offset overflow
+ 000004D9  E8 00000000 E	call outstrline
+ 000004DE  E8 00000000 E	call system_pause
+ 000004E3  6A FE		push -2
+ 000004E5  E8 00000000 E	call ExitProcess
+ 000004EA			main ENDP
+				end main
+Microsoft (R) Macro Assembler Version 14.33.31629.0	    12/29/22 12:32:26
+MyProgram.txt.asm					     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+CONST  . . . . . . . . . . . . .	32 Bit	 000000F9 Para	  Public  'CONST'	 ReadOnly
+FLAT . . . . . . . . . . . . . .	GROUP
+STACK  . . . . . . . . . . . . .	32 Bit	 00001000 Para	  Stack	  'STACK'	 
+_DATA  . . . . . . . . . . . . .	32 Bit	 00000040 Para	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 000004EA Para	  Public  'CODE'	
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+ExitProcess  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+_CheckEven . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 0000007B Public STDCALL
+  _CheckEvennumb . . . . . . . .	DWord	 bp + 00000008
+  NULL_DIVISION  . . . . . . . .	L Near	 0000004F _TEXT	
+  VAR_OVERFLOW . . . . . . . . .	L Near	 00000065 _TEXT	
+_Degree  . . . . . . . . . . . .	P Near	 00000227 _TEXT	Length= 000000D7 Public STDCALL
+  NULL_DIVISION  . . . . . . . .	L Near	 000002D2 _TEXT	
+  VAR_OVERFLOW . . . . . . . . .	L Near	 000002E8 _TEXT	
+_Operation . . . . . . . . . . .	P Near	 0000007B _TEXT	Length= 000001AC Public STDCALL
+  _Operationoper . . . . . . . .	DWord	 bp + 00000008
+  _Operationx  . . . . . . . . .	DWord	 bp + 0000000C
+  _Operationy  . . . . . . . . .	DWord	 bp + 00000010
+  NULL_DIVISION  . . . . . . . .	L Near	 000001FB _TEXT	
+  VAR_OVERFLOW . . . . . . . . .	L Near	 00000211 _TEXT	
+main . . . . . . . . . . . . . .	P Near	 000002FE _TEXT	Length= 000001EC Public STDCALL
+  while1 . . . . . . . . . . . .	L Near	 000003F2 _TEXT	
+  endwhile1  . . . . . . . . . .	L Near	 000004AD _TEXT	
+  NULL_DIVISION  . . . . . . . .	L Near	 000004BE _TEXT	
+  VAR_OVERFLOW . . . . . . . . .	L Near	 000004D4 _TEXT	
+outnumline . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+outnum . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+outstrline . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+outstr . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+power  . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+random . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+sqrt_num . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+system_pause . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 00000000h   
+@DataSize  . . . . . . . . . . .	Number	 00000000h   
+@Interface . . . . . . . . . . .	Number	 00000003h   
+@Model . . . . . . . . . . . . .	Number	 00000007h   
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 FLAT
+@fardata?  . . . . . . . . . . .	Text   	 FLAT
+@fardata . . . . . . . . . . . .	Text   	 FLAT
+@stack . . . . . . . . . . . . .	Text   	 FLAT
+L10  . . . . . . . . . . . . . .	Byte	 0000004B CONST	
+L11  . . . . . . . . . . . . . .	DWord	 0000007C CONST	
+L12  . . . . . . . . . . . . . .	Byte	 00000080 CONST	
+L13  . . . . . . . . . . . . . .	Byte	 0000008D CONST	
+L14  . . . . . . . . . . . . . .	Byte	 0000009E CONST	
+L15  . . . . . . . . . . . . . .	DWord	 000000AC CONST	
+L16  . . . . . . . . . . . . . .	DWord	 000000B0 CONST	
+L17  . . . . . . . . . . . . . .	Byte	 000000B4 CONST	
+L18  . . . . . . . . . . . . . .	Byte	 000000B8 CONST	
+L19  . . . . . . . . . . . . . .	Byte	 000000BC CONST	
+L1 . . . . . . . . . . . . . . .	DWord	 00000031 CONST	
+L20  . . . . . . . . . . . . . .	DWord	 000000DB CONST	
+L21  . . . . . . . . . . . . . .	Byte	 000000DF CONST	
+L22  . . . . . . . . . . . . . .	Byte	 000000E7 CONST	
+L23  . . . . . . . . . . . . . .	Byte	 000000EC CONST	
+L24  . . . . . . . . . . . . . .	Byte	 000000F1 CONST	
+L25  . . . . . . . . . . . . . .	DWord	 000000F5 CONST	
+L2 . . . . . . . . . . . . . . .	DWord	 00000035 CONST	
+L3 . . . . . . . . . . . . . . .	DWord	 00000039 CONST	
+L4 . . . . . . . . . . . . . . .	DWord	 0000003D CONST	
+L5 . . . . . . . . . . . . . . .	Byte	 00000041 CONST	
+L6 . . . . . . . . . . . . . . .	Byte	 00000043 CONST	
+L7 . . . . . . . . . . . . . . .	Byte	 00000045 CONST	
+L8 . . . . . . . . . . . . . . .	Byte	 00000047 CONST	
+L9 . . . . . . . . . . . . . . .	Byte	 00000049 CONST	
+_CheckEvenEven . . . . . . . . .	DWord	 00000004 _DATA	
+_CheckEvenRemains  . . . . . . .	DWord	 00000000 _DATA	
+_DegreeNumb  . . . . . . . . . .	DWord	 0000000C _DATA	
+_DegreePowNumb . . . . . . . . .	DWord	 00000010 _DATA	
+_DegreeSqrtNumb  . . . . . . . .	DWord	 00000014 _DATA	
+_OperationRes  . . . . . . . . .	DWord	 00000008 _DATA	
+main_Result  . . . . . . . . . .	DWord	 00000030 _DATA	
+main_c . . . . . . . . . . . . .	DWord	 0000003C _DATA	
+main_division  . . . . . . . . .	DWord	 00000028 _DATA	
+main_hum . . . . . . . . . . . .	DWord	 0000002C _DATA	
+main_isEven  . . . . . . . . . .	DWord	 00000038 _DATA	
+main_minus . . . . . . . . . . .	DWord	 00000024 _DATA	
+main_num . . . . . . . . . . . .	DWord	 00000034 _DATA	
+main_plus  . . . . . . . . . . .	DWord	 00000020 _DATA	
+main_x . . . . . . . . . . . . .	DWord	 00000018 _DATA	
+main_y . . . . . . . . . . . . .	DWord	 0000001C _DATA	
+overflow . . . . . . . . . . . .	Byte	 00000018 CONST	
+zero . . . . . . . . . . . . . .	Byte	 00000000 CONST	
+
+	   0 Warnings
+	   0 Errors

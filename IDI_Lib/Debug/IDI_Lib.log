@@ -1,0 +1,7 @@
+﻿  IDIlib.cpp
+D:\KPO\Compiler\IDI_Lib\IDIlib.cpp(14,13): warning C4244: return: преобразование "double" в "int", возможна потеря данных
+D:\KPO\Compiler\IDI_Lib\IDIlib.cpp(20,14): warning C4244: return: преобразование "double" в "int", возможна потеря данных
+D:\KPO\Compiler\IDI_Lib\IDIlib.cpp(30,13): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+  pch.cpp
+  Создание кода...
+  IDI_Lib.vcxproj -> D:\KPO\Compiler\IDI-2022\Debug\IDI_Lib.lib

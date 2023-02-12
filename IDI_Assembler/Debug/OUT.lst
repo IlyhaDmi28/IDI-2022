@@ -1,0 +1,171 @@
+Microsoft (R) Macro Assembler Version 14.33.31629.0	    12/21/22 23:38:54
+OUT.asm							     Page 1 - 1
+
+
+				.586
+				.model flat, stdcall
+				includelib libucrt.lib
+				includelib kernel32.lib
+				ExitProcess PROTO:DWORD 
+				.stack 4096
+
+				 outnum PROTO : DWORD
+
+				 outstr PROTO : DWORD
+
+				 outstrline PROTO : DWORD
+
+				 outnumline PROTO : DWORD
+
+				 system_pause PROTO 
+
+				 random PROTO  : DWORD
+
+				 sqrt_num PROTO  : DWORD
+
+				 power PROTO : DWORD, : DWORD
+ 00000000			.const
+ 00000000 45 52 52 4F 52	 null_division BYTE 'ERROR: DIVISION BY ZERO', 0
+	   3A 20 44 49 56
+	   49 53 49 4F 4E
+	   20 42 59 20 5A
+	   45 52 4F 00
+ 00000018 45 52 52 4F 52	 overflow BYTE 'ERROR: VARIABLE OVERFLOW', 0 
+	   3A 20 56 41 52
+	   49 41 42 4C 45
+	   20 4F 56 45 52
+	   46 4C 4F 57 00
+ 00000031 00000001			L1 DWORD 1
+ 00000035 00000006			L2 SDWORD 6
+ 00000039 44 61 6E 69 6B		L3 BYTE 'Danik Soset Hyu ', 0
+	   20 53 6F 73 65
+	   74 20 48 79 75
+	   20 00
+ 0000004A 00000001			L4 SDWORD 1
+ 0000004E 0000000C			L5 SDWORD 12
+ 00000052 00000000			L6 DWORD 0
+ 00000000			.data
+ 00000000 00000000			maink DWORD 0
+ 00000004 00000000			mainh SDWORD 0
+
+ 00000000			.code
+
+ 00000000			main PROC
+ 00000000  FF 35 00000031 R		push L1
+ 00000006  8F 05 00000000 R		pop maink
+
+ 0000000C  FF 35 00000035 R		push L2
+ 00000012  8F 05 00000004 R		pop mainh
+
+ 00000018			while1:
+ 00000018  A1 00000000 R		mov eax, maink
+					.IF eax  !=  1
+ 00000022  EB 4B				jmp endwhile1
+					.ENDIF
+
+
+ 00000024  68 00000039 R		push offset L3
+ 00000029  E8 00000000 E		call outstr
+
+ 0000002E  FF 35 00000004 R		push mainh
+ 00000034  E8 00000000 E		call outnumline
+ 00000039  FF 35 00000004 R		push mainh
+ 0000003F  FF 35 0000004A R		push L4
+ 00000045  58				pop eax
+ 00000046  5B				pop ebx
+ 00000047  03 C3			add eax, ebx
+ 00000049  70 46			jo EXIT_OVERFLOW
+ 0000004B  50				push eax
+ 0000004C  8F 05 00000004 R		pop mainh
+
+ 00000052  A1 00000004 R		mov eax, mainh
+ 00000057  8B 1D 0000004E R		mov ebx, L5
+					.IF SDWORD PTR eax  ==  SDWORD PTR ebx
+ 00000061  FF 35 00000052 R		push L6
+ 00000067  8F 05 00000000 R		pop maink
+
+
+					.ENDIF
+ 0000006D  EB A9			jmp while1
+
+ 0000006F			endwhile1:
+ 0000006F  E8 00000000 E	call system_pause
+ 00000074  6A 00		push 0
+ 00000076  E8 00000000 E	call ExitProcess
+ 0000007B			SOMETHINGWRONG:
+ 0000007B  68 00000000 R	push offset null_division
+ 00000080  E8 00000000 E	call outstrline
+ 00000085  E8 00000000 E	call system_pause
+ 0000008A  6A FF		push -1
+ 0000008C  E8 00000000 E	call ExitProcess
+ 00000091			EXIT_OVERFLOW:
+ 00000091  68 00000018 R	push offset overflow
+ 00000096  E8 00000000 E	call outstrline
+ 0000009B  E8 00000000 E	call system_pause
+ 000000A0  6A FE		push -2
+ 000000A2  E8 00000000 E	call ExitProcess
+ 000000A7			main ENDP
+				end main
+Microsoft (R) Macro Assembler Version 14.33.31629.0	    12/21/22 23:38:54
+OUT.asm							     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+CONST  . . . . . . . . . . . . .	32 Bit	 00000056 Para	  Public  'CONST'	 ReadOnly
+FLAT . . . . . . . . . . . . . .	GROUP
+STACK  . . . . . . . . . . . . .	32 Bit	 00001000 Para	  Stack	  'STACK'	 
+_DATA  . . . . . . . . . . . . .	32 Bit	 00000008 Para	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 000000A7 Para	  Public  'CODE'	
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+ExitProcess  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 000000A7 Public STDCALL
+  while1 . . . . . . . . . . . .	L Near	 00000018 _TEXT	
+  endwhile1  . . . . . . . . . .	L Near	 0000006F _TEXT	
+  SOMETHINGWRONG . . . . . . . .	L Near	 0000007B _TEXT	
+  EXIT_OVERFLOW  . . . . . . . .	L Near	 00000091 _TEXT	
+outnumline . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+outnum . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+outstrline . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+outstr . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+power  . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+random . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+sqrt_num . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+system_pause . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 00000000h   
+@DataSize  . . . . . . . . . . .	Number	 00000000h   
+@Interface . . . . . . . . . . .	Number	 00000003h   
+@Model . . . . . . . . . . . . .	Number	 00000007h   
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 FLAT
+@fardata?  . . . . . . . . . . .	Text   	 FLAT
+@fardata . . . . . . . . . . . .	Text   	 FLAT
+@stack . . . . . . . . . . . . .	Text   	 FLAT
+L1 . . . . . . . . . . . . . . .	DWord	 00000031 CONST	
+L2 . . . . . . . . . . . . . . .	DWord	 00000035 CONST	
+L3 . . . . . . . . . . . . . . .	Byte	 00000039 CONST	
+L4 . . . . . . . . . . . . . . .	DWord	 0000004A CONST	
+L5 . . . . . . . . . . . . . . .	DWord	 0000004E CONST	
+L6 . . . . . . . . . . . . . . .	DWord	 00000052 CONST	
+mainh  . . . . . . . . . . . . .	DWord	 00000004 _DATA	
+maink  . . . . . . . . . . . . .	DWord	 00000000 _DATA	
+null_division  . . . . . . . . .	Byte	 00000000 CONST	
+overflow . . . . . . . . . . . .	Byte	 00000018 CONST	
+
+	   0 Warnings
+	   0 Errors
